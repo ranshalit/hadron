@@ -1,3 +1,47 @@
+# prepare a new image
+
+steps:
+1. run
+   sudo ./hadron_bsp_setup.sh --flash nvme
+
+2. power cycle the board and login using:
+    username: ubuntu
+    password:ubuntu
+
+3. in target (use serial) run
+   scp bmi160_core.ko ubuntu@192.168.132.100:
+   scp bmi160_i2c.ko ubuntu@192.168.132.100:
+
+4.  in target (use serial) run: 
+    sudo vi /etc/modules-load.d/modules.conf, and add a line:
+    r8168 
+    in /etc/modules-load.d/modules.conf
+
+5.  in target (use serial) run:
+    RULE='/etc/udev/rules.d/99-bmi160.rules'
+    echo 'ACTION=="add", SUBSYSTEM=="i2c", KERNEL=="i2c-[0-9]*", RUN+="/bin/sh -c '"'echo bmi160 0x69 > /sys/bus/i2c/devices/%k/new_device'"'"' | sudo tee "${RULE}" >/dev/null
+
+6. sudo vi /etc/NetworkManager/system-connections/Wired_connection_1 with content:
+    
+    [connection]
+    id=Wired_connection_1
+    type=802-3-ethernet
+        
+    [802-3-ethernet]
+    [ipv4] 
+    method=manual
+    dns=192.168.132.1
+    address1=192.168.132.100/24,192.168.132.1
+    [ipv6]
+    method=auto
+    ip6-privacy=2
+
+6. It is ready
+
+
+
+
+
 # Hadron BSP Installer + Flasher
 
 A one-shot helper script (`hadron_bsp_setup.sh`) that:  
