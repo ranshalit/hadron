@@ -3,6 +3,10 @@
 steps:
 1. run
    sudo ./hadron_bsp_setup.sh --flash nvme
+   Note: this is same as Bar script with the only change
+   - ( cd "$FLASH_DIR" && sudo "./$REL_FLASH" "$profile")
+   + ( cd "$FLASH_DIR" && sudo "./$REL_FLASH" "$profile" && sudo ./flash.sh --qspi-only cti/orin-nano/hadron/base internal)
+    becuase qspi was not programmed without this command (only nvme).
 
 2. power cycle the board and login using:
     username: ubuntu
