@@ -76,5 +76,3 @@ sudo ./hadron_bsp_setup.sh --flash nvme
 | Use a pre-downloaded BSP tarball            | `sudo ./hadron_bsp_setup.sh --bsp-file ~/Downloads/CTI-L4T-*.tgz --flash nvme` |
 
 
-#### Problems? 
-contact `barif@rafael.co.il`

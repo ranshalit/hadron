@@ -62,7 +62,6 @@ see script install_bmi160.sh
     cat /sys/bus/iio/devices/iio\:device0/in_accel_z_raw
 
 # References:
-    https://azuredevops.rafael.co.il/Land_and_Naval_Collection/IW/_git/Installer?path=%2Fbmi160%2Finstall_bmi_offline.sh
     UP 7000 Edge datasheet 
     https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmi160-ds000.pdf
     https://developer.download.nvidia.com/assets/embedded/secure/jetson/orin_nano/docs/Jetson-Orin-Nano-DevKit-Carrier-Board-Specification_SP-11324-001_v1.3.pdf?__token__=exp=1753855391~hmac=1fd7796e5d5e2e2b6c6187327f73bca43631976e0087098c975dc96e7f5112f3&t=eyJscyI6ImdzZW8iLCJsc2QiOiJodHRwczovL3d3dy5nb29nbGUuY29tLyJ9 table 3.3 pin header
