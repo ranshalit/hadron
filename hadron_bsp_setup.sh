@@ -20,7 +20,7 @@ usage(){
 cat <<EOF
 Usage: sudo $0 [OPTIONS]
 
-  --flash <nvme|emmc>     install BSP (if needed) then flash image
+  --flash <nvme|emmc|qspi>     install BSP (if needed) then flash image
   --flash-dir <path>      explicit Linux_for_Tegra path (auto-detect if absent)
   --bsp-file <file.tgz>   use local CTI tarball
   --bsp-url  <url>        download BSP from custom URL
@@ -44,7 +44,7 @@ while [[ $# -gt 0 ]]; do
     *) die "Unknown option $1";;
   esac
 done
-[[ -n $FLASH_MODE ]] || die "--flash expects 'nvme' or 'emmc'"
+[[ -n $FLASH_MODE ]] || die "--flash expects 'nvme' or 'emmc' or 'qspi'"
 
 # ── locate Linux_for_Tegra ────────────────────────────────────────────────
 find_flash_dir() {
@@ -115,11 +115,13 @@ info "Jetson detected, flashing profile '$profile' …"
 # make path to helper relative to Linux_for_Tegra (strip leading dir)
 REL_FLASH=${CTI_FLASH#$FLASH_DIR/}
 
-if $DRY_RUN; then
+if [ "$FLASH_MODE" = "qspi" ]; then
+  (cd "$FLASH_DIR" && sudo ./flash.sh --qspi-only cti/orin-nano/hadron/base internal)
+elif $DRY_RUN; then
   echo "(cd \"$FLASH_DIR\" && sudo ./$REL_FLASH $profile)"
 else
-  ( cd "$FLASH_DIR" && sudo "./$REL_FLASH" "$profile" && sudo ./flash.sh --qspi-only cti/orin-nano/hadron/base internal)
+  ( cd "$FLASH_DIR" && sudo "./$REL_FLASH" "$profile")
 fi
 
+
 if [[ $? -ne 0 ]]; then die "Flashing failed – see messages above."; fi
-info "Flash finished ✓  – move SOM to Hadron carrier, connect RS-232 (J4/J5), boot, use /dev/ttyTHS1."
